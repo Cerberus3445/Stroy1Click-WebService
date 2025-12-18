@@ -1,0 +1,30 @@
+spring:
+  application:
+    name: Web-Service
+  profiles:
+    active: dev
+  config:
+    import: application-prod.yml
+  messages:
+    basename: messages
+    encoding: UTF-8
+
+otel:
+  service:
+    name: "web-service"
+  traces:
+    exporter: "otlp"
+    sampler: "always_on"
+  metrics:
+    exporter: "otlp"
+    export:
+      interval: 5000
+  logs:
+    exporter: "otlp"
+  exporter:
+    otlp:
+      protocol: "grpc"
+      endpoint: "http://localhost:4317"
+
+server:
+  port: 8080
