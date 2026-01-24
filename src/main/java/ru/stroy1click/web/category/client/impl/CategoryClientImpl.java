@@ -52,17 +52,17 @@ public class CategoryClientImpl implements CategoryClient {
     }
 
     @Override
-    public void create(CategoryDto dto, String jwt) {
+    public CategoryDto create(CategoryDto dto, String jwt) {
         log.info("create {}", dto);
         try {
-             this.restClient.post()
+             return this.restClient.post()
                     .header("Authorization", "Bearer " + jwt)
                     .body(dto)
                     .retrieve()
                     .onStatus(HttpStatusCode::isError, (request, response) -> {
                         ValidationErrorUtils.validateStatus(response);
                     })
-                    .body(String.class);
+                    .body(CategoryDto.class);
         } catch (ResourceAccessException e) {
             log.error("get error ", e);
             throw new ServiceUnavailableException();

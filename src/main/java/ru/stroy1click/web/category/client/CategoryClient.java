@@ -8,7 +8,5 @@ import java.util.List;
 
 public interface CategoryClient extends ResourceClient<CategoryDto, Integer> {
 
-    List<CategoryDto> getAll();
-
     List<SubcategoryDto> getSubcategories(Integer id);
 }

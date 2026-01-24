@@ -3,6 +3,7 @@ package ru.stroy1click.web.product.type.client.impl;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.MediaType;
 import org.springframework.http.client.MultipartBodyBuilder;
@@ -14,9 +15,9 @@ import ru.stroy1click.web.common.exception.ServiceUnavailableException;
 import ru.stroy1click.web.common.util.ValidationErrorUtils;
 import ru.stroy1click.web.product.type.client.ProductTypeClient;
 import ru.stroy1click.web.product.type.dto.ProductTypeDto;
-import ru.stroy1click.web.subcategory.dto.SubcategoryDto;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Objects;
 
 @Slf4j
@@ -50,17 +51,34 @@ public class ProductTypeClientImpl implements ProductTypeClient {
     }
 
     @Override
-    public void create(ProductTypeDto dto, String jwt) {
+    public List<ProductTypeDto> getAll() {
+        log.info("getAll");
+        try {
+            return this.restClient.get()
+                    .retrieve()
+                    .onStatus(HttpStatusCode::isError, (request, response) -> {
+                        ValidationErrorUtils.validateStatus(response);
+                    })
+                    .body(new ParameterizedTypeReference<>() {
+                    });
+        } catch (ResourceAccessException e) {
+            log.error("get error ", e);
+            throw new ServiceUnavailableException();
+        }
+    }
+
+    @Override
+    public ProductTypeDto create(ProductTypeDto dto, String jwt) {
         log.info("create {}", dto);
         try {
-            this.restClient.post()
+            return this.restClient.post()
                     .header("Authorization", "Bearer " + jwt)
                     .body(dto)
                     .retrieve()
                     .onStatus(HttpStatusCode::isError, (request, response) -> {
                         ValidationErrorUtils.validateStatus(response);
                     })
-                    .body(String.class);
+                    .body(ProductTypeDto.class);
         } catch (ResourceAccessException e) {
             log.error("get error ", e);
             throw new ServiceUnavailableException();

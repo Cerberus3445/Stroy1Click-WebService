@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class AuthViewController {
 
     @GetMapping("/login")
-    public String login(){
+    public String loginPage(){
         return "auth/login";
     }
 

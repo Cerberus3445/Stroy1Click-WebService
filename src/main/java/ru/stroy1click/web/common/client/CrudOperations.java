@@ -1,10 +1,14 @@
 package ru.stroy1click.web.common.client;
 
+import java.util.List;
+
 public interface CrudOperations<T, ID>{
 
     T get(ID id);
 
-    void create(T dto, String jwt);
+    List<T> getAll();
+
+    T create(T dto, String jwt);
 
     void update(ID id, T dto, String jwt);
 
