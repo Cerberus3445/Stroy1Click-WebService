@@ -10,7 +10,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class ProductViewController {
 
     @GetMapping("/{id}")
-    public String getProduct(@PathVariable("id") Long id){
-        return "catalog/product-info";
+    public String productPage(@PathVariable("id") Long ignoredId){
+        return "catalog/product";
+    }
+
+    @GetMapping("/search-results")
+    public String searchProductsResult(){
+        return "catalog/search-results";
     }
 }

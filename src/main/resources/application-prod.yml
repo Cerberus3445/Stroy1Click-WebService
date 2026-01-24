@@ -25,8 +25,159 @@ otel:
       protocol: "grpc"
       endpoint: "http://localhost:4317"
 
+management:
+  health:
+    circuitbreakers:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: health
+  endpoint:
+    health:
+      show-details: always
+
+resilience4j:
+  circuitbreaker:
+    instances:
+      authClient:
+        registerHealthIndicator: true
+        slidingWindowType: COUNT_BASED
+        slidingWindowSize: 10
+        minimumNumberOfCalls: 5
+        failureRateThreshold: 50
+        waitDurationInOpenState: 120s
+        permittedNumberOfCallsInHalfOpenState: 3
+        automaticTransitionFromOpenToHalfOpenEnabled: true
+        ignore-exceptions:
+          - ru.stroy1click.web.common.exception.NotFoundException
+          - ru.stroy1click.web.common.exception.ValidationException
+      attributeClient:
+        registerHealthIndicator: true
+        slidingWindowType: COUNT_BASED
+        slidingWindowSize: 10
+        minimumNumberOfCalls: 5
+        failureRateThreshold: 50
+        waitDurationInOpenState: 120s
+        permittedNumberOfCallsInHalfOpenState: 3
+        automaticTransitionFromOpenToHalfOpenEnabled: true
+        ignore-exceptions:
+          - ru.stroy1click.web.common.exception.NotFoundException
+          - ru.stroy1click.web.common.exception.ValidationException
+      attributeOptionClient:
+        registerHealthIndicator: true
+        slidingWindowType: COUNT_BASED
+        slidingWindowSize: 10
+        minimumNumberOfCalls: 5
+        failureRateThreshold: 50
+        waitDurationInOpenState: 120s
+        permittedNumberOfCallsInHalfOpenState: 3
+        automaticTransitionFromOpenToHalfOpenEnabled: true
+        ignore-exceptions:
+          - ru.stroy1click.web.common.exception.NotFoundException
+          - ru.stroy1click.web.common.exception.ValidationException
+      productAttributeAssignmentClient:
+        registerHealthIndicator: true
+        slidingWindowType: COUNT_BASED
+        slidingWindowSize: 10
+        minimumNumberOfCalls: 5
+        failureRateThreshold: 50
+        waitDurationInOpenState: 120s
+        permittedNumberOfCallsInHalfOpenState: 3
+        automaticTransitionFromOpenToHalfOpenEnabled: true
+        ignore-exceptions:
+          - ru.stroy1click.web.common.exception.NotFoundException
+          - ru.stroy1click.web.common.exception.ValidationException
+      userClient:
+        registerHealthIndicator: true
+        slidingWindowType: COUNT_BASED
+        slidingWindowSize: 10
+        minimumNumberOfCalls: 5
+        failureRateThreshold: 50
+        waitDurationInOpenState: 120s
+        permittedNumberOfCallsInHalfOpenState: 3
+        automaticTransitionFromOpenToHalfOpenEnabled: true
+        ignore-exceptions:
+          - ru.stroy1click.web.common.exception.NotFoundException
+          - ru.stroy1click.web.common.exception.ValidationException
+      categoryClient:
+        registerHealthIndicator: true
+        slidingWindowType: COUNT_BASED
+        slidingWindowSize: 10
+        minimumNumberOfCalls: 5
+        failureRateThreshold: 50
+        waitDurationInOpenState: 120s
+        permittedNumberOfCallsInHalfOpenState: 3
+        automaticTransitionFromOpenToHalfOpenEnabled: true
+        ignore-exceptions:
+          - ru.stroy1click.web.common.exception.NotFoundException
+          - ru.stroy1click.web.common.exception.ValidationException
+      subcategoryClient:
+        registerHealthIndicator: true
+        slidingWindowType: COUNT_BASED
+        slidingWindowSize: 10
+        minimumNumberOfCalls: 5
+        failureRateThreshold: 50
+        waitDurationInOpenState: 120s
+        permittedNumberOfCallsInHalfOpenState: 3
+        automaticTransitionFromOpenToHalfOpenEnabled: true
+        ignore-exceptions:
+          - ru.stroy1click.web.common.exception.NotFoundException
+          - ru.stroy1click.web.common.exception.ValidationException
+      productTypeClient:
+        registerHealthIndicator: true
+        slidingWindowType: COUNT_BASED
+        slidingWindowSize: 10
+        minimumNumberOfCalls: 5
+        failureRateThreshold: 50
+        waitDurationInOpenState: 120s
+        permittedNumberOfCallsInHalfOpenState: 3
+        automaticTransitionFromOpenToHalfOpenEnabled: true
+        ignore-exceptions:
+          - ru.stroy1click.web.common.exception.NotFoundException
+          - ru.stroy1click.web.common.exception.ValidationException
+      productClient:
+        registerHealthIndicator: true
+        slidingWindowType: COUNT_BASED
+        slidingWindowSize: 10
+        minimumNumberOfCalls: 5
+        failureRateThreshold: 50
+        waitDurationInOpenState: 120s
+        permittedNumberOfCallsInHalfOpenState: 3
+        automaticTransitionFromOpenToHalfOpenEnabled: true
+        ignore-exceptions:
+          - ru.stroy1click.web.common.exception.NotFoundException
+          - ru.stroy1click.web.common.exception.ValidationException
+      confirmationCodeClient:
+        registerHealthIndicator: true
+        slidingWindowType: COUNT_BASED
+        slidingWindowSize: 10
+        minimumNumberOfCalls: 5
+        failureRateThreshold: 50
+        waitDurationInOpenState: 120s
+        permittedNumberOfCallsInHalfOpenState: 3
+        automaticTransitionFromOpenToHalfOpenEnabled: true
+        ignore-exceptions:
+          - ru.stroy1click.web.common.exception.NotFoundException
+          - ru.stroy1click.web.common.exception.ValidationException
+
 server:
-  port: 3032
+  servlet:
+    session:
+      timeout: 72h
+  port: 3035
 
 url:
-  cluster: "http://localhost:8080"
+  user: http://localhost:8080/api/v1/users
+  auth: http://localhost:9090/api/v1/auth
+  confirmationCode: http://localhost:6060/api/v1/confirmation-codes
+  category: http://localhost:7070/api/v1/categories
+  subcategory: http://localhost:7070/api/v1/subcategories
+  productType: http://localhost:7070/api/v1/product-types
+  product: http://localhost:7070/api/v1/products
+  attribute: http://localhost:4040/api/v1/attributes
+  attributeOption: http://localhost:4040/api/v1/attribute-options
+  productAttributeAssignment: http://localhost:4040/api/v1/product-attribute-assignments
+  storage: http://localhost:7070/api/v1/storage
+  order: http://localhost:1010/api/v1/orders
+  search: http://localhost:4045/api/v1/search

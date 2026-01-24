@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class ProductTypeViewController {
 
     @GetMapping("/{id}/products")
-    public String getProducts(@PathVariable("id") Integer id){
-        return "catalog/product";
+    public String getProducts(@PathVariable("id") Integer ignoredId){
+        return "catalog/products";
     }
 }

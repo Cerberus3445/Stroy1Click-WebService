@@ -40,7 +40,7 @@ public class OrderClientImpl implements OrderClient {
                     });
         } catch (ResourceAccessException e){
             log.info("get error ", e);
-            throw new ServiceUnavailableException();
+            throw new ServiceUnavailableException(e.getMessage());
         }
     }
 
@@ -62,17 +62,34 @@ public class OrderClientImpl implements OrderClient {
     }
 
     @Override
-    public void create(OrderDto dto, String jwt) {
+    public List<OrderDto> getAll() {
+        log.info("getAll");
+        try {
+            return this.restClient.get()
+                    .retrieve()
+                    .onStatus(HttpStatusCode::isError, (request, response) -> {
+                        ValidationErrorUtils.validateStatus(response);
+                    })
+                    .body(new ParameterizedTypeReference<>() {
+                    });
+        } catch (ResourceAccessException e) {
+            log.error("get error ", e);
+            throw new ServiceUnavailableException();
+        }
+    }
+
+    @Override
+    public OrderDto create(OrderDto dto, String jwt) {
         log.info("create {}", dto);
         try {
-            this.restClient.post()
+            return this.restClient.post()
                     .header("Authorization", "Bearer " + jwt)
                     .body(dto)
                     .retrieve()
                     .onStatus(HttpStatusCode::isError, (request, response) -> {
                         ValidationErrorUtils.validateStatus(response);
                     })
-                    .body(String.class);
+                    .body(OrderDto.class);
         } catch (ResourceAccessException e) {
             log.error("get error ", e);
             throw new ServiceUnavailableException();

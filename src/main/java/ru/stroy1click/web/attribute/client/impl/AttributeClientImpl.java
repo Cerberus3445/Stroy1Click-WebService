@@ -3,6 +3,7 @@ package ru.stroy1click.web.attribute.client.impl;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.ResourceAccessException;
@@ -11,6 +12,8 @@ import ru.stroy1click.web.attribute.client.AttributeClient;
 import ru.stroy1click.web.attribute.dto.AttributeDto;
 import ru.stroy1click.web.common.exception.ServiceUnavailableException;
 import ru.stroy1click.web.common.util.ValidationErrorUtils;
+
+import java.util.List;
 
 @Slf4j
 @Service
@@ -43,17 +46,17 @@ public class AttributeClientImpl implements AttributeClient {
     }
 
     @Override
-    public void create(AttributeDto dto, String jwt) {
+    public AttributeDto create(AttributeDto dto, String jwt) {
         log.info("create {}", dto);
         try {
-            this.restClient.post()
+            return this.restClient.post()
                     .header("Authorization", "Bearer " + jwt)
                     .body(dto)
                     .retrieve()
                     .onStatus(HttpStatusCode::isError, (request, response) -> {
                         ValidationErrorUtils.validateStatus(response);
                     })
-                    .body(String.class);
+                    .body(AttributeDto.class);
         } catch (ResourceAccessException e) {
             log.error("get error ", e);
             throw new ServiceUnavailableException();
@@ -91,6 +94,23 @@ public class AttributeClientImpl implements AttributeClient {
                         ValidationErrorUtils.validateStatus(response);
                     })
                     .body(String.class);
+        } catch (ResourceAccessException e) {
+            log.error("get error ", e);
+            throw new ServiceUnavailableException();
+        }
+    }
+
+    @Override
+    public List<AttributeDto> getAll() {
+        log.info("getAll");
+        try {
+            return this.restClient.get()
+                    .retrieve()
+                    .onStatus(HttpStatusCode::isError, (request, response) -> {
+                        ValidationErrorUtils.validateStatus(response);
+                    })
+                    .body(new ParameterizedTypeReference<>() {
+                    });
         } catch (ResourceAccessException e) {
             log.error("get error ", e);
             throw new ServiceUnavailableException();

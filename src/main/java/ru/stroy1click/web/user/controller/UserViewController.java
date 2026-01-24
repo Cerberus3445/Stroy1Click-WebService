@@ -3,11 +3,11 @@ package ru.stroy1click.web.user.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import ru.stroy1click.web.order.client.OrderClient;
 import ru.stroy1click.web.security.SecurityUtils;
 import ru.stroy1click.web.user.client.UserClient;
+import ru.stroy1click.web.user.dto.UserDto;
 
 @Controller
 @RequestMapping("/user")
@@ -19,10 +19,24 @@ public class UserViewController {
     private final OrderClient orderClient;
 
     @GetMapping("/profile")
-    public String profile(Model model){
+    public String profilePage(Model model){
         model.addAttribute("user", this.userClient.get(SecurityUtils.getUserId()));
         model.addAttribute("orders", this.orderClient.getByUserId(SecurityUtils.getUserId(), SecurityUtils.getJwt()));
 
         return "user/profile";
+    }
+
+    @GetMapping("/update")
+    public String updatePage(Model model){
+        model.addAttribute("user", this.userClient.get(SecurityUtils.getUserId()));
+
+        return "/user/update";
+    }
+
+    @PostMapping("/update")
+    public String update(@ModelAttribute("user") UserDto userDto){
+        this.userClient.update(userDto.getId(), userDto, SecurityUtils.getJwt());
+
+        return "redirect:/user/profile";
     }
 }

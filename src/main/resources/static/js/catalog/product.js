@@ -1,4 +1,4 @@
-const SIZE = 2;
+const SIZE = 20;
 
 document.addEventListener('DOMContentLoaded', () => {
     const match = window.location.pathname.match(/\/product-types\/(\d+)/);
@@ -22,7 +22,7 @@ function goToProduct(id) {
 async function loadFilters(productTypeId) {
     const container = document.getElementById('dynamic-filters');
     try {
-        const res = await fetch(`/api/v1/product-type-attribute-values?productTypeId=${productTypeId}`);
+        const res = await fetch(`/api/v1/attribute-options?productTypeId=${productTypeId}`);
         const values = await res.json();
 
         const grouped = values.reduce((acc, item) => {
@@ -66,7 +66,7 @@ async function applyFilters(productTypeId, page = 0) {
     });
 
     try {
-        const res = await fetch(`/api/v1/product-attributes/filter?page=${page}&size=${SIZE}`, {
+        const res = await fetch(`/api/v1/product-attribute-assignments/filter?page=${page}&size=${SIZE}`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(filterData)

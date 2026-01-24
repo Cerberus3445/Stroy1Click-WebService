@@ -10,12 +10,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class CategoryViewController {
 
     @GetMapping
-    public String getCategories(){
-        return "catalog/category";
+    public String categoriesPage(){
+        return "catalog/categories";
     }
 
     @GetMapping("/{id}/subcategories")
-    public String getSubcategoriesOfCategory(@PathVariable("id") Integer id){
-        return "catalog/subcategory";
+    public String subcategoriesOfCategoryPage(@PathVariable("id") Integer ignoredId){
+        return "catalog/subcategories";
     }
 }

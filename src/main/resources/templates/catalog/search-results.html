@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1" />
+    <title>Товары</title>
+    <link rel="stylesheet" href="../../static/css/catalog/product.css" th:href="@{/css/catalog/product.css}">
+</head>
+<body>
+
+<header class="main-header">
+    <div class="logo">Stroy1Click</div>
+    <nav>
+        <a href="/">Главная</a>
+        <a href="/categories">Категории</a>
+    </nav>
+    <div class="header-actions">
+        <button class="action-btn cart-btn">
+            <a href="/cart" class="btn-text">Корзина</a></button>
+    </div>
+</header>
+
+<main class="layout">
+    <aside class="sidebar">
+
+    </aside>
+
+    <section class="content">
+        <div class="toolbar">
+            <div class="controls">
+                <div class="view-toggle">
+                    <button id="gridBtn" class="active">Grid</button>
+                    <button id="listBtn">List</button>
+                </div>
+            </div>
+        </div>
+
+        <h2>Результаты поиска для: <span id="search-query"></span></h2>
+        <div id="grid" class="grid">
+            <div class="loader-container">
+                <div class="spinner"></div>
+            </div>
+        </div>
+    </section>
+
+    <div id="overlayBg" class="overlay-bg"></div>
+</main>
+
+
+<script src="/js/common/header.js" th:href="@{/js/common/header.js}"></script>
+<script src="/js/catalog/search-results.js" th:href="@{/css/catalog/search-results.js}"></script>
+
+
+<footer>
+    <div class="col">
+        <h3>Stroy1Click</h3>
+        <p>ООО "ВэлСнаб"</p>
+        <p>Надёжный поставщик строительных материалов</p>
+        <p>+7 914 790 43 80</p>
+        <p>2704380@mail.ru</p>
+        <p>г. Владивосток, ул. Выселковая 61в.</p>
+    </div>
+</footer>
+
+<script th:src="@{/js/catalog/search-results.js}"></script>
+
+<script>
+    // Мобильный сайдбар
+    const filterToggle = document.getElementById('filterToggle');
+    const overlayBg = document.getElementById('overlayBg');
+    const closeSidebarBtn = document.getElementById('closeSidebar');
+
+    function toggleSidebar(show){
+        if(show) {
+            document.body.classList.add('overlay-open');
+            overlayBg.classList.add('show');
+            closeSidebarBtn.style.display='block';
+        } else {
+            document.body.classList.remove('overlay-open');
+            overlayBg.classList.remove('show');
+            closeSidebarBtn.style.display='none';
+        }
+    }
+
+    // Добавляем обработчики, если их нет
+    if(filterToggle) filterToggle.onclick = () => toggleSidebar(true);
+    if(overlayBg) overlayBg.onclick = () => toggleSidebar(false);
+    if(closeSidebarBtn) closeSidebarBtn.onclick = () => toggleSidebar(false);
+</script>
+
+</body>
+
+</html>

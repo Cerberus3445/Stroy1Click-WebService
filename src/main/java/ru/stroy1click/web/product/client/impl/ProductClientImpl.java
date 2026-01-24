@@ -14,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 import ru.stroy1click.web.common.exception.ServiceUnavailableException;
 import ru.stroy1click.web.common.model.PageResponse;
 import ru.stroy1click.web.common.util.ValidationErrorUtils;
+import ru.stroy1click.web.order.dto.OrderDto;
 import ru.stroy1click.web.product.client.ProductClient;
 import ru.stroy1click.web.product.dto.ProductDto;
 import ru.stroy1click.web.product.dto.ProductImageDto;
@@ -52,6 +53,23 @@ public class ProductClientImpl implements ProductClient {
                             .build()
                     )
                     .retrieve()
+                    .body(new ParameterizedTypeReference<>() {
+                    });
+        } catch (ResourceAccessException e) {
+            log.error("get error ", e);
+            throw new ServiceUnavailableException();
+        }
+    }
+
+    @Override
+    public List<ProductDto> getAll() {
+        log.info("getAll");
+        try {
+            return this.restClient.get()
+                    .retrieve()
+                    .onStatus(HttpStatusCode::isError, (request, response) -> {
+                        ValidationErrorUtils.validateStatus(response);
+                    })
                     .body(new ParameterizedTypeReference<>() {
                     });
         } catch (ResourceAccessException e) {
@@ -148,17 +166,17 @@ public class ProductClientImpl implements ProductClient {
     }
 
     @Override
-    public void create(ProductDto dto, String jwt) {
+    public ProductDto create(ProductDto dto, String jwt) {
         log.info("create {}", dto);
         try {
-            this.restClient.post()
+            return this.restClient.post()
                     .header("Authorization", "Bearer " + jwt)
                     .body(dto)
                     .retrieve()
                     .onStatus(HttpStatusCode::isError, (request, response) -> {
                         ValidationErrorUtils.validateStatus(response);
                     })
-                    .body(String.class);
+                    .body(ProductDto.class);
         } catch (ResourceAccessException e) {
             log.error("get error ", e);
             throw new ServiceUnavailableException();

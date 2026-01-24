@@ -14,10 +14,10 @@
 <header class="main-header">
     <div class="logo">Stroy1Click</div>
     <nav>
-        <a href="#">Главная</a>
-        <a href="#">Категории</a>
-        <a href="#">О нас</a>
-        <a href="#">Контакты</a>
+        <a href="/">Главная</a>
+        <a href="/categories">Категории</a>
+        <a href="/about-us">О нас</a>
+        <a href="/contacts">Контакты</a>
     </nav>
 
     <div class="header">
@@ -50,10 +50,10 @@
     </div>
 
     <div id="mobile-menu" class="mobile-menu">
-        <a href="#">Главная</a>
-        <a href="#">Категории</a>
-        <a href="#">О нас</a>
-        <a href="#">Контакты</a>
+        <a href="/">Главная</a>
+        <a href="/categories">Категории</a>
+        <a href="/about-us">О нас</a>
+        <a href="/contacts">Контакты</a>
     </div>
 </header>
 
@@ -62,25 +62,30 @@
     <div class="profile-card">
         <h2>Обновление профиля</h2>
 
-        <form th:action="@{/user/update}" th:method="POST">
+        <form th:action="@{/user/update}" th:method="POST" th:object="${user}">
             <div class="profile-info">
                 <div class="info-row">
                     <label for="firstName">Имя:</label>
-                    <input type="text" id="firstName" name="firstName"
-                           th:value="${user.getFirstName()}" required>
+                    <input type="text" id="firstName" th:field="*{firstName}" required>
                 </div>
 
                 <div class="info-row">
                     <label for="lastName">Фамилия:</label>
-                    <input type="text" id="lastName" name="lastName"
-                           th:value="${user.getLastName()}" required>
+                    <input type="text" id="lastName" th:field="*{lastName}" required>
                 </div>
             </div>
+
+            <input type="hidden" th:field="*{id}">
+            <input type="hidden" th:field="*{email}">
+            <input type="hidden" th:field="*{emailConfirmed}">
+            <input type="hidden" th:field="*{role}">
+            <input type="hidden" th:field="*{password}">
 
             <div style="margin-top:20px; text-align:right;">
                 <button type="submit" class="action-btn">Сохранить изменения</button>
             </div>
         </form>
+
     </div>
 
 </div>
@@ -88,39 +93,12 @@
 <footer>
     <div class="col">
         <h3>Stroy1Click</h3>
-        <p>Надёжный поставщик строительных материалов с 2019 года.</p>
-        <p>+7 999 999 99 99</p>
-        <p>forexample@mail.ru</p>
-        <p>город, улица, дом</p>
-    </div>
-
-    <div class="col">
-        <h3>Категории</h3>
-        <a href="#">Кирпич и блоки</a>
-        <a href="#">Цемент и смеси</a>
-        <a href="#">Инструменты</a>
-        <a href="#">Сантехника</a>
-        <a href="#">Электрика</a>
-        <a href="#">Кровля</a>
-    </div>
-
-    <div class="col">
-        <h3>Клиентам</h3>
-        <a href="#">Гарантии</a>
-        <a href="#">Контакты</a>
-        <a href="#">О компании</a>
-    </div>
-
-    <div class="col">
-        <h3>Подкатегории</h3>
-        <a href="#">Кирпич и блоки</a>
-        <a href="#">Цемент и смеси</a>
-        <a href="#">Инструменты</a>
-        <a href="#">Сантехника</a>
-        <a href="#">Электрика</a>
-        <a href="#">Кровля</a>
+        <p>ООО "ВэлСнаб"</p>
+        <p>Надёжный поставщик строительных материалов</p>
+        <p>+7 914 790 43 80</p>
+        <p>2704380@mail.ru</p>
+        <p>г. Владивосток, ул. Выселковая 61в.</p>
     </div>
 </footer>
-
 </body>
 </html>

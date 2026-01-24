@@ -27,7 +27,7 @@ a { color: inherit; text-decoration: none; }
 button { font: inherit; cursor: pointer; touch-action: manipulation; }
 
 /* =========================================
-   1. HEADER (Исправлено)
+   1. HEADER
    ========================================= */
 .main-header {
     margin: 0;

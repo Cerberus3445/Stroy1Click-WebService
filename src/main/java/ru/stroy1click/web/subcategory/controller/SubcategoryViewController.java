@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class SubcategoryViewController {
 
     @GetMapping("/{id}/product-types")
-    public String getProductTypes(@PathVariable("id") Integer id){
-        return "catalog/product-type";
+    public String productTypesPage(@PathVariable("id") Integer ignoredId){
+        return "catalog/product-types";
     }
 }

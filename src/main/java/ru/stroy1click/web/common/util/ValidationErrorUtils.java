@@ -3,7 +3,6 @@ package ru.stroy1click.web.common.util;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ProblemDetail;
 import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -11,7 +10,6 @@ import org.springframework.validation.FieldError;
 import ru.stroy1click.web.common.exception.*;
 
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 public class ValidationErrorUtils {
@@ -52,7 +50,7 @@ public class ValidationErrorUtils {
             return problem.getDetail() != null ? problem.getDetail() : problem.getTitle();
 
         } catch (Exception e) {
-            throw new RuntimeException("Ошибка обработки сообщения");
+            throw new RuntimeException("Ошибка обработки сообщения " +  e.getMessage());
         }
     }
 
